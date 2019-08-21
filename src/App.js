@@ -1,26 +1,64 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {Component} from 'react';
 import './App.css';
+import AnimalList from './AnimalList';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default class App extends Component {
+  state = {
+    animals: [{
+        name: "Bear"
+      },
+      {
+        name: "Tiger"
+      },
+      {
+        name: "Peacock"
+      }],
+      animal: "",
+      isError: false,
+  }
+
+
+  handleChange = event => {
+    const names = this.state.animals.map (animal => animal.name)
+    names.includes(event.target.value) ?
+    this.setState ({
+      animal: event.target.value,
+      isError: true
+    }) :
+    this.setState ({
+      animal: event.target.value,
+      isError: false
+    })
+
+  }
+
+  handleSubmit = event => {
+    event.preventDefault()
+    this.setState ({
+      animals: [...this.state.animals, {name: this.state.animal}],
+      animal: ""
+    })
+  }
+
+
+  render() {
+    const { animals, animal } = this.state;
+    return (
+    <>
+    <h1>Animals</h1>
+    <AnimalList animals={animals}/>
+
+      <form onSubmit={this.handleSubmit}>
+        <input
+          type="text"
+          placeholder="Enter a animal"
+          value={animal}
+          onChange={this.handleChange}/>
+        <input type="submit" value="Add"/>
+      </form>
+      {this.state.isError ? "There's Already one yaTurkey!" : null}
+    </>
+    )
+  }
+
 }
-
-export default App;
