@@ -1,62 +1,74 @@
 import React, {Component} from 'react';
 import './App.css';
 import AnimalList from './AnimalList';
+import AnimalForm from './AnimalForm';
 
 export default class App extends Component {
   state = {
-    animals: [{
-        name: "Bear"
-      },
-      {
-        name: "Tiger"
-      },
-      {
-        name: "Peacock"
-      }],
-      animal: "",
-      isError: false,
+    animals: ""
+  }
+
+  componentDidMount() {
+  this.fetchAnimals()
+  }
+
+  fetchAnimals = () => {
+    const animalsUrl = "http://localhost:3000/animals"
+    fetch(animalsUrl)
+    .then(response => response.json())
+    .then(animals => this.setState ({
+      animals: animals
+    }))
   }
 
 
-  handleChange = event => {
-    const names = this.state.animals.map (animal => animal.name)
-    names.includes(event.target.value) ?
-    this.setState ({
-      animal: event.target.value,
-      isError: true
-    }) :
-    this.setState ({
-      animal: event.target.value,
-      isError: false
+    deleteAnimal = (id) => {
+    let url = `http://localhost:3000/animals/${id}`
+    fetch(url, {
+      method: "DELETE",
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
     })
-
+    .then(result => this.fetchAnimals())
   }
 
-  handleSubmit = event => {
-    event.preventDefault()
-    this.setState ({
-      animals: [...this.state.animals, {name: this.state.animal}],
-      animal: ""
+    addAnimal = (animal) => {
+    const newAnimal = {...animal, id: Date.now()}
+    const newAnimals = [...this.state.animals, newAnimal]
+    this.setState({
+      animals: newAnimals
     })
   }
+
+  postAnimal = (newAnimal) => {
+    let url = "http://localhost:3000/animals"
+  fetch(url, {
+    method: "POST",
+    body: JSON.stringify(newAnimal),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(res => res.json())
+  .then(response => console.log('Success:', JSON.stringify(response)))
+  .catch(error => console.error('Error:', error))
+  .then(result => this.fetchAnimals())
+  }
+
 
 
   render() {
-    const { animals, animal } = this.state;
+    const { animals } = this.state;
     return (
     <>
     <h1>Animals</h1>
-    <AnimalList animals={animals}/>
-
-      <form onSubmit={this.handleSubmit}>
-        <input
-          type="text"
-          placeholder="Enter a animal"
-          value={animal}
-          onChange={this.handleChange}/>
-        <input type="submit" value="Add"/>
-      </form>
-      {this.state.isError ? "There's Already one yaTurkey!" : null}
+    {animals
+      ? <AnimalList animals={animals}/>
+    : <h1>Gathering animals</h1>
+    }
+    <AnimalForm animals={animals} postAnimal={this.postAnimal} />
     </>
     )
   }
