@@ -21,19 +21,6 @@ export default class App extends Component {
     }))
   }
 
-
-    deleteAnimal = (id) => {
-    let url = `http://localhost:3000/animals/${id}`
-    fetch(url, {
-      method: "DELETE",
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      }
-    })
-    .then(result => this.fetchAnimals())
-  }
-
     addAnimal = (animal) => {
     const newAnimal = {...animal, id: Date.now()}
     const newAnimals = [...this.state.animals, newAnimal]

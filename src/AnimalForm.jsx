@@ -36,7 +36,7 @@ constructor(props) {
         <input
           type="text"
           placeholder="Enter a name"
-          value={this.props.name}
+          value={this.state.name}
           onChange={this.handleChange}/>
         <input type="submit" value="Add"/>
       </form>
