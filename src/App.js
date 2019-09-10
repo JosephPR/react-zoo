@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import './App.css';
 import AnimalList from './AnimalList';
 import AnimalForm from './AnimalForm';
-// import SearchBox from './SearchBox';
+import Kingdom from './kingdoms'
+
 import Nav from './Nav'
 
 export default class App extends Component {
@@ -75,6 +76,8 @@ export default class App extends Component {
     return (
     <>
     <Nav  handleSearchChange={this.handleSearchChange} />
+    
+    <Kingdom />
     <h1 className='heading'>Animals</h1>
     <AnimalForm animals={animals} postAnimal={this.postAnimal} />
     {animals
