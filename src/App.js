@@ -2,10 +2,13 @@ import React, {Component} from 'react';
 import './App.css';
 import AnimalList from './AnimalList';
 import AnimalForm from './AnimalForm';
+// import SearchBox from './SearchBox';
+import Nav from './Nav'
 
 export default class App extends Component {
   state = {
-    animals: ""
+    animals: [],
+    searchField: "",
   }
 
   componentDidMount() {
@@ -29,6 +32,18 @@ export default class App extends Component {
     })
   }
 
+  deleteAnimal = (id) => {
+  let url = `http://localhost:3000/animals/${id}`
+  fetch(url, {
+    method: "DELETE",
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    }
+  })
+  .then(result => this.fetchAnimals())
+}
+
   postAnimal = (newAnimal) => {
     let url = "http://localhost:3000/animals"
   fetch(url, {
@@ -44,18 +59,28 @@ export default class App extends Component {
   .then(result => this.fetchAnimals())
   }
 
+  handleSearchChange = e => {
+    this.setState({
+      searchField: e.target.value
+    })
+  }
+
 
 
   render() {
-    const { animals } = this.state;
+    const { animals, searchField } = this.state;
+    const filteredAnimals = animals.filter(animal =>
+    animal.name.toLowerCase().includes(searchField.toLowerCase())
+  )
     return (
     <>
-    <h1>Animals</h1>
+    <Nav  handleSearchChange={this.handleSearchChange} />
+    <h1 className='heading'>Animals</h1>
+    <AnimalForm animals={animals} postAnimal={this.postAnimal} />
     {animals
-      ? <AnimalList animals={animals}/>
+      ? <AnimalList deleteAnimal={this.deleteAnimal} animals={filteredAnimals}/>
     : <h1>Gathering animals</h1>
     }
-    <AnimalForm animals={animals} postAnimal={this.postAnimal} />
     </>
     )
   }

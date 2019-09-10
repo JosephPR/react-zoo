@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
+import { Input } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 
 export default class AnimalForm extends Component {
 constructor(props) {
   super(props)
   this.state = {
-    name: ""
+    name: "",
+    image:"",
+    description:"",
   }
 
 }
@@ -12,9 +16,24 @@ constructor(props) {
 
 
 
-    handleChange = event => {
+    handleNameChange = event => {
       this.setState ({
-        name: event.target.value
+        name: event.target.value,
+
+      })
+
+    }
+    handleImageChange = event => {
+      this.setState ({
+        image: event.target.value,
+
+      })
+
+    }
+    handleDescriptionChange = event => {
+      this.setState ({
+      description: event.target.value,
+
       })
 
     }
@@ -23,7 +42,9 @@ constructor(props) {
       event.preventDefault()
       this.props.postAnimal(this.state)
       this.setState ({
-        name: ""
+        name: "",
+        image:"",
+        description:""
 
       })
     }
@@ -32,13 +53,23 @@ constructor(props) {
   render() {
     return (
       <>
-      <form onSubmit={this.handleSubmit}>
-        <input
+      <form className='form' onSubmit={this.handleSubmit}>
+        <Input
           type="text"
           placeholder="Enter a name"
           value={this.state.name}
-          onChange={this.handleChange}/>
-        <input type="submit" value="Add"/>
+          onChange={this.handleNameChange}/>
+        <Input
+          type="text"
+          placeholder="Enter a image"
+          value={this.state.image}
+          onChange={this.handleImageChange}/>
+        <Input
+          type="text"
+          placeholder="Enter a description"
+          value={this.state.description}
+          onChange={this.handleDescriptionChange}/>
+        <Button color='primary' type="submit" value="Add">Submit</Button>
       </form>
       {this.state.isError ? "There's Already one yaTurkey!" : null}
       </>

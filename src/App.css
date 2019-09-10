@@ -1,0 +1,55 @@
+.card {
+  background-color: rgba(236, 155, 34, 0.52)!important;
+
+  max-width: 30%;
+  text-align: center;
+  padding-top: 10px;
+    margin: 20px 20px;
+
+}
+
+.card:hover {
+  background-image:
+    radial-gradient(
+      yellow,
+      #f06d06
+    );
+  border-radius: 10px;
+  font-weight: bold;
+
+}
+
+.image {
+  max-width: 100%
+}
+.image:hover {
+   transition-duration: 5s;
+   transform: scaleX(1.2);
+}
+
+.animals-list {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+
+}
+
+.form{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.heading {
+  text-align: center;
+}
+
+.text-field {
+  text-align: center;
+
+}
+
+.app-bar {
+  background-color: rgb(114, 157, 201)!important;
+  color: black!important;
+}
